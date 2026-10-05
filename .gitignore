@@ -53,3 +53,8 @@ dkms.conf
 
 # debug information files
 *.dwo
+.DS_Store
+scratch/
+craftinginterpreters/
+main
+doubly_linked_lists_heap_allocated_strings.c
