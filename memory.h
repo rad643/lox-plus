@@ -9,6 +9,7 @@
 
 #define FREE_ARRAY(type, pointer, oldCount) reallocate(pointer, sizeof(type) * (oldCount), 0)
 
+// Handles all memory: oldSize 0 = allocate, newSize 0 = free, otherwise grow or shrink.
 void* reallocate(void* pointer, size_t oldSize, size_t newSize);
 
 #endif
