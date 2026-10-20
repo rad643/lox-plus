@@ -25,7 +25,7 @@ static int simpleInstruction(const char* name, int offset) {
 }
 
 int disassembleInstruction(Chunk* chunk, int offset) {
-  printf("offset=%d sourceLine=%d ", offset , chunk->lines[offset]);
+  printf("offset=%d sourceLine=%d ", offset , getLine(chunk,offset) );
   uint8_t instruction = chunk->code[offset];
   switch (instruction) {
     case OP_CONSTANT:

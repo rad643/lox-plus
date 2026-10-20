@@ -10,10 +10,17 @@ typedef enum {
 } OpCode;
 
 typedef struct{
+	int value;
+	int count;
+}Run;
+
+typedef struct{
     int count;
     int capacity;
     uint8_t * code;
-    int* lines;
+    Run* lines;
+	int lineCount;
+	int lineCapacity;
     ValueArray constants;
 }Chunk;
 
@@ -21,6 +28,7 @@ void initChunk(Chunk * chunk);
 void writeChunk(Chunk * chunk, uint8_t byte, int line);
 // Adds a value to the chunk's constant pool and returns the index it landed at.
 int addConstant(Chunk* chunk, Value value); 
+int getLine(Chunk* chunk, int offset);
 void freeChunk(Chunk* chunk);
 
 #endif
