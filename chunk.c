@@ -50,6 +50,27 @@ int addConstant(Chunk* chunk, Value value) {
     return chunk->constants.count - 1;
 }
 
+// Writes either OP_CONSTANT or OP_CONSTANT_LONG, depending on the size of the
+// returned constant pool index, followed by the index in however many bytes that opcode needs (base 256).
+void writeConstant(Chunk* chunk, Value value, int line) {
+    int operand=addConstant(chunk,value); // add value to the constant pool, and return its index in the pool
+    if(operand>255){ // too great for uint8_t so we use 3 uint8_t bytes to store it and the longer opcode
+        uint8_t lastByte=operand%256;
+        operand=operand/256;
+        uint8_t middleByte=operand%256;
+        operand=operand/256;
+        uint8_t firstByte=operand%256;
+        operand=operand/256;
+        writeChunk(chunk,OP_CONSTANT_LONG, line);
+        writeChunk(chunk, firstByte,line);
+        writeChunk(chunk, middleByte,line);
+        writeChunk(chunk, lastByte,line);
+    }else{ // fits within 0-255 so we use 1 uint8_t byte to store it and the shorter opcode 
+        writeChunk(chunk,OP_CONSTANT,line);
+        writeChunk(chunk,operand,line);
+    }
+}
+
 int getLine(Chunk* chunk, int offset){
     int total=0;
     int run=0;
